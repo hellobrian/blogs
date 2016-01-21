@@ -64,7 +64,7 @@ Now let’s create some files:
 $ touch scss/main.scss .gitignore
 ```
 * **main.scss** is where we will write out scss code.
-* *(optional)* **.gitignore** is a hidden file we use to tell GitHub what files and folders to exclude from our repo. I like to tell GitHub to ignore my node_modules folder. If me or anyone else needs to clone my repo, I usually tell them to npm install based on the packages in package.json.
+* **.gitignore** *(recommended)*: this is a hidden file we use to tell GitHub what files and folders to exclude from our repo. I like to tell GitHub to ignore my **node_modules** folder. If I or anyone else needs to clone my repo, I can tell them to npm install based on the packages in package.json.
 
 Now your file structure should look like this:
 
