@@ -199,3 +199,5 @@ Thanks for getting this far and taking the time to follow along with this articl
 Obviously this is missing a lot of stuff that I usually like to have in my projects, like live-reload and autoprefixer. For a more useful set-up that includes those missing things, check out my npm-sass repo for Express.js projects.
 
 Anyway, thanks again for reading. Here are some puppies.
+
+![puppies](https://cdn-images-1.medium.com/max/800/1*l_I1sL8XOWAr_3kjmjMf2w.gif)
