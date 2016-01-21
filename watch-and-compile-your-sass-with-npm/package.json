@@ -2,10 +2,9 @@
   "name": "watch-and-compile-your-sass-with-npm",
   "version": "1.0.0",
   "description": "Article and source code for how to use npm scripts to watch and compile scss",
-  "main": "index.js",
   "scripts": {
-    "build-css": "node-sass --include-path scss scss/main.scss public/css/main.css",
-    "watch-css": "nodemon -e scss -x \"npm run build-css\""
+    "build-css": "./bin/build-css",
+    "watch-css": "./bin/watch-css"
   },
   "repository": {
     "type": "git",
