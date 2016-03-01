@@ -163,7 +163,7 @@ Take that watch-css (nodemon) script and put inside the watch-css file.
 We can clean up these files so we don’t have to escape any quotes. For example, your build-css file should look like this:
 
 ```
-node-sass — include-path scss scss/main.scss public/css/main.css
+node-sass --include-path scss scss/main.scss public/css/main.css
 ```
 
 And your watch-css file should look like this:
