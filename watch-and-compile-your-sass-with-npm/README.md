@@ -130,7 +130,7 @@ Let’s update our scripts with a watch script. Inside package.json, make your s
 
 ```json
 "scripts": {
- "build-css": "node-sass --include-path scss scss/main.scsspublic/css/main.css",
+ "build-css": "node-sass --include-path scss scss/main.scss public/css/main.css",
  "watch-css": "nodemon -e scss -x \"npm run build-css\""
 },
 ```
