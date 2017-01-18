@@ -1,21 +1,17 @@
 # Predictable SVGs: Knowing just enough XML
 
-I do a lot of work with SVGs at IBM.
-
-We make them available to be used in very simply because they're used as icons in the product we build.
-There's only a small subset of things that these SVG icons need to do but here are the two important ones:
+I do a lot of work with SVGs at IBM Bluemix.
 
 Our SVG icons need to be able to change their size and color with CSS. That's it.
 
-So when it comes down to modifying SVG icons, there are only 4 XML attributes I wanted to understand first: `fill`, `viewBox`, `width` and `height`.
-
-The only way I've been able to get consistent, predictable results is when I ensure that `viewBox`, `width` and `height` attributes are always together on the `<svg>` wrapping element. 
+With that said, all I need to use are: `fill`, `viewBox`, `width` and `height`.
 
 ### Forget everything you know
 
 Okay, well, not _everything_ but just here me out...
 
 I know you know these attributes work together in a **coordinate system**...but I've had to tell myself, "Hey, forget about that for now. You're not doing anything too fancy with these SVGs."
+But for some reason, I always have to use `viewBox`, `width` and `height` together to ensure I get predictable and consistent modification results.
 
 ### Here's what _seems_ to happen...
 
@@ -31,10 +27,10 @@ Get ready for some air quotes.
 
 We can control "sizing" with `width` and `height`. 
 
-- You can override these attribtue values with CSS
-- The SVG will keep its aspect ratio intact, so you won't see any weird stretching or shrinking when you do weird size changes. 
+- You can override these attribute values with CSS
+- The SVG will keep its aspect ratio intact (this means no stretching or sizing side-effects)
 
-We can control the "parts of the SVG you actually see" with `viewBox`.
+We can control the "crop" of the SVG with `viewBox` (this is the part of the SVG you actually see with your eyeballs)
 
 - `viewBox` is like defining the size and position of a "window" to view the SVG icon. For example:
 	- A "window" that is too small will show a small part of the SVG.
