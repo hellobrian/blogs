@@ -1,0 +1,17 @@
+{
+  "name": "predictable-svg-xml",
+  "version": "1.0.0",
+  "description": "Blog for learning SVG XML",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "gulp serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.18.7",
+    "gulp": "^3.9.1"
+  }
+}
