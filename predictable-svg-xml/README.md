@@ -21,7 +21,7 @@ Before we talk about those 3 XML things, let's talk about XML just so we're on t
 
 ## XML
 
-This is XML for an SVG. This XML will tell the browser to draw a red circle:
+This is XML for an SVG. This code tells the browser to draw a red circle:
 
 ```html
 <svg viewBox="0 0 100 100" width="100" height="100">
@@ -31,7 +31,7 @@ This is XML for an SVG. This XML will tell the browser to draw a red circle:
 
 It looks a lot like HTML, right?
 They resemble each other because HTML and XML are both Markup Languages.
-- XML is used for data. 
+- XML is used for data.
 - HTML is used to create structure for websites and apps.
 
 In fact, you can take this XML and put it directly in your HTML file and it will display.
@@ -46,6 +46,19 @@ In fact, you can take this XML and put it directly in your HTML file and it will
 </body>
 </html>
 ```
+
+This is one of the best ways to include SVGs on your website or app especially when the SVG XML is small and simple.
+In most cases, you can treat it like HTML with a few exceptions. One commone exception is adding color to your SVG.
+
+## Fill
+
+```html
+<svg viewBox="0 0 100 100" width="100" height="100">
+	<circle cx="50" cy="50" r="50" fill="red" />
+</svg>
+```
+
+
 
 
 
