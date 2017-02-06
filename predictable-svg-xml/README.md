@@ -47,16 +47,75 @@ In fact, you can take this XML and put it directly in your HTML file and it will
 </html>
 ```
 
-This is one of the best ways to include SVGs on your website or app especially when the SVG XML is small and simple.
-In most cases, you can treat it like HTML with a few exceptions. One commone exception is adding color to your SVG.
+This is one of the best ways to include SVGs especially when the SVG XML is small and simple.
+In most cases, you can treat XML like HTML with a few exceptions. One common exception is adding color to your SVG.
 
 ## Fill
 
 ```html
-<svg viewBox="0 0 100 100" width="100" height="100">
-	<circle cx="50" cy="50" r="50" fill="red" />
+<svg viewBox="0 0 100 100" width="100" height="100" fill="red">
+	<circle cx="50" cy="50" r="50" />
 </svg>
 ```
+
+For SVG XML, you can add color to shapes using the `fill` attribute; this works like the CSS `background-color` rule.
+This will fill the contents of the shape with the color value given.
+
+You can use any color values that work with CSS:
+- hexcodes
+- color names
+- `rgb` and `rgba`
+- gradients
+- etc.
+
+If you understand how CSS cascades styles from a parent to a child element, those same rules apply between `<svg>` (parent) and any shape elements inside (child).
+
+This means you can use CSS to override the `fill` attribute for `<svg>`.
+
+```html
+<style>
+	svg {
+		fill: green;
+	}
+</style>
+
+<!-- svg will be green -->
+<svg class="many-circles" viewBox="0 0 300 300" width="100" height="100" fill="red">
+	<circle cx="50" cy="50" r="50" />
+</svg>
+```
+
+## Stroke
+
+Stroke is like the CSS `outline` or `border` of the SVG XML world.
+Same CSS rules apply.
+
+## ViewBox
+
+Here's where it gets tricky (for me even today).
+
+The `viewBox` attribute controls the parts of the SVG you actually see. 
+
+The viewable stuff. 
+
+The `viewBox`!
+
+You can think of it like a crop or a clip for photos and pictures. 
+- You can position the crop. 
+- You can resize the crop.
+- If the crop is too small, you'll only see a small part of the SVG.
+- If the crop is too big, you're going to see the entire SVG and then some (this also scales the SVG size to appear smaller and "at a distance" #airquotes);
+- If the crop is __just right__, you'll see the entire SVG - no more no less.
+
+So here was the __big insight__ for me about `viewBox`.
+If you don't care about cropping your SVG, set your `viewBox` value to match the given `width` and `height` attributes on the SVG.
+
+```html
+<svg viewBox="0 0 24 24" width="24" height="24">
+  ...
+</svg>
+```
+
 
 
 
@@ -82,13 +141,7 @@ The `fill` attribute sets the color of the SVG.
 - Uses any CSS color values (hexcodes, names, etc.)
 - Can be applied to the `<svg>` or different shapes inside the `<svg>` like, `<circle>`, etc.
 
-### ViewBox
 
-The `viewBox` attribute controls the parts of the SVG you actually see. The viewable stuff. viewBox!
-It almost works like a __moveable, resizable window__.
-- A "window" that is too small will show a small part of the SVG.
-- A "window" that is too big will show the entire SVG and scale it accordingly.
-- A "window" that is sized and positioned _just_ right...well, it shows the entire SVG; no more and no less.
 
 
 > #### Keeping `viewBox`, `width` and `height` together
