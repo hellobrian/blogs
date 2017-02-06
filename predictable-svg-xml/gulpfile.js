@@ -8,7 +8,10 @@ gulp.task('html-watch', (done) => {
 
 gulp.task('serve', () => {
   browserSync.init({
-    server: { baseDir: './' }
+    open: false,
+    server: { 
+      baseDir: './' 
+    }
   });
 
   gulp.watch('*.html', ['html-watch']);
