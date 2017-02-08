@@ -1,45 +1,71 @@
 # Predictable SVGs: Knowing just enough XML
 
-## We ❤️ SVGs but maybe you only __tolerate__ XML 👀
+I've been maintaining an icon library for work. 
 
-This past year, I had the chance to start maintaining our own SVG icon library so I had to start learning how to do things with XML.
-You can do a lot with SVGs but for our users at work, we only have a few requirements for our icons:
+Our icons are made of SVGs. 
+
+SVGs are made of XML. 
+
+Being fairly new to XML, I learned a lot about it! Not all of it, just enough. 
+
+Our icon library has pretty simple requirements:
 
 1. Be SVGs.
-2. Change color with HTML/CSS.
-3. Change size with HTML/CSS. 
+2. Change color with CSS.
+3. Change size with CSS.
 
 That's it.
 
-I discovered that I only needed to care about 3 XML things to meet all of our requirements: 
+I would bet that these are minimum requirements for any icon library.
 
-- `fill`, 
-- `viewBox`, 
-- `width` and `height`.
+So far, I found that I only needed to know about 3-ish XML attributes:
 
-Before we talk about those 3 XML things, let's talk about XML just so we're on the same page.
+- `fill`,
+- `viewBox`,
+- `width` and `height`
 
-## XML
+## TL;DR
 
-This is XML for an SVG. This code tells the browser to draw a red circle:
+Here's the gist:
+
+Set `viewBox`, `width` and `height` with __matching values__.
+
+- This allows you to resize SVG predictably using `width` and `height`.
+- You never have to mess around with `viewBox`...just `width` and `height`
+
+Use SVGO to optimize your SVGs.
+
+- SVGO converts XML exported from vector programs (Illustrator, Sketch) into clean, readable code.
+- Optimizing removes a lot of XML code you don't need to learn when you're just getting started.
+
+Know that you can override attributes like `fill`, `width` and `height` using CSS.
+
+- Always target `<svg>` element for applying CSS since styles will cascade down to decendents.
+
+## XML is like HTML
+
+XML is a markup language.
 
 ```html
+<!-- this is a red circle -->
 <svg viewBox="0 0 100 100" width="100" height="100">
-	<circle cx="50" cy="50" r="50" fill="red" />
+  <circle cx="50" cy="50" r="50" fill="red" />
 </svg>
 ```
 
-It looks a lot like HTML, right?
-They resemble each other because HTML and XML are both Markup Languages.
-- XML is used for data.
-- HTML is used to create structure for websites and apps.
+It's not a coincidence that it looks a lot like HTML.
 
-In fact, you can take this XML and put it directly in your HTML file and it will display.
+This is because HTML is a markup language as well.
+
+- XML is used for data (and defining SVG)
+- HTML is for structuring websites and apps.
+
+In fact, you can take XML for an SVG and put it directly in an HTML document and it will render a red circle when viewed in the browser.
 
 ```html
 <html>
 <body>
-	<!-- We call this "inline SVG" because it's in the lines (#dadjokes) -->
+  <!-- We call this "inline SVG" because it's in the lines (#dadjokes) -->
   <svg viewBox="0 0 100 100" width="100" height="100">
     <circle cx="50" cy="50" r="50" fill="red" />
   </svg>
@@ -47,74 +73,113 @@ In fact, you can take this XML and put it directly in your HTML file and it will
 </html>
 ```
 
-This is one of the best ways to include SVGs especially when the SVG XML is small and simple.
-In most cases, you can treat XML like HTML with a few exceptions. One common exception is adding color to your SVG.
+This is called __inline SVG__. 
+
+This technique is one of the best ways to add SVGs to an HTML document under the right circumstances.
+
+> The right circumstances for inline SVG:
+> 
+> - When the SVG is short and readable (like, when it's optimized with SVGO).
+> - Ideally, when the SVG is only used once
+
+In most cases, you can treat XML like HTML with a few exceptions. 
 
 ## Fill
 
+The `fill` attribute is like `background-color` but for vector shapes.
+
+- You must use `fill` for SVG to change the color.
+- The `background-color` style doesn't work on SVG.
+
 ```html
 <svg viewBox="0 0 100 100" width="100" height="100" fill="red">
-	<circle cx="50" cy="50" r="50" />
+  <circle cx="50" cy="50" r="50" />
 </svg>
 ```
 
-For SVG XML, you can add color to shapes using the `fill` attribute; this works like the CSS `background-color` rule.
-This will fill the contents of the shape with the color value given.
-
 You can use any color values that work with CSS:
 - hexcodes
-- color names
+- color names like `red`
 - `rgb` and `rgba`
 - gradients
 - etc.
 
-If you understand how CSS cascades styles from a parent to a child element, those same rules apply between `<svg>` (parent) and any shape elements inside (child).
+Although we exclusively use `fill` with SVGs instead of `background-color`, general CSS rules still apply. 
 
-This means you can use CSS to override the `fill` attribute for `<svg>`.
+Styles applied to the `<svg>` element cascades down to any shape elements contained inside.
+
+What does this mean in real-world use? Well, you can reset the `fill` value using CSS on the svg.
 
 ```html
 <style>
-	svg {
-		fill: green;
-	}
+  svg {
+    fill: green;
+  }
 </style>
 
 <!-- svg will be green -->
 <svg class="many-circles" viewBox="0 0 300 300" width="100" height="100" fill="red">
-	<circle cx="50" cy="50" r="50" />
+  <circle cx="50" cy="50" r="50" />
 </svg>
 ```
 
-## Stroke
-
-Stroke is like the CSS `outline` or `border` of the SVG XML world.
-Same CSS rules apply.
 
 ## ViewBox
 
-Here's where it gets tricky (for me even today).
+The `viewBox` attribute controls the parts of the SVG you _actually see_.
 
-The `viewBox` attribute controls the parts of the SVG you actually see. 
-
-The viewable stuff. 
+The viewable stuff.
 
 The `viewBox`!
 
-You can think of it like a crop or a clip for photos and pictures. 
-- You can position the crop. 
-- You can resize the crop.
-- If the crop is too small, you'll only see a small part of the SVG.
-- If the crop is too big, you're going to see the entire SVG and then some (this also scales the SVG size to appear smaller and "at a distance" #airquotes);
-- If the crop is __just right__, you'll see the entire SVG - no more no less.
+This is a concept that's still tricky for me to understand even today.
 
-So here was the __big insight__ for me about `viewBox`.
-If you don't care about cropping your SVG, set your `viewBox` value to match the given `width` and `height` attributes on the SVG.
+None of my awesome metaphors work well enough to explain `viewBox` so my main recommendation is to set it so that it's value matches `width` and `height`. Then, never touch it again.
+
+---------------
+
+I like to think of `viewBox` being similar to "cropping a photo". You can set the position and the size of the "crop" but the actual SVG doesn't change its own position or size.
+
+I found that:
+- When the `viewBox` is too small, you only see a small part of the SVG.
+- When the `viewBox` is __just right__, you'll see the entire SVG and nothing else.
+
+Since I've been using SVGs as icons, I only care that the `viewBox` is set just right to match the SVGs dimensions. Doing this allows me to never touch the `viewBox` attribute ever again.
 
 ```html
 <svg viewBox="0 0 24 24" width="24" height="24">
   ...
 </svg>
 ```
+
+Set it and forget it!
+
+### What happens when the viewBox is bigger than the SVG?
+
+This is where my photo metaphor kind of falls apart.
+
+- When the crop is too big, the SVG scales to appear smaller since it scales according to how big the viewBox is relative to its actual size.
+- It looks like we're viewing the SVG "from a distance".
+
+
+------------
+
+
+
+
+> __The `viewBox` numbers__
+> There are 4 numbers to specify the `viewBox`:
+> ```
+> viewbox="min-x min-y width height"
+>```
+> * The `min` values sets a position for the viewBox. In other words, where the `viewBox` starts.
+> * The `width` and `height` determine the size of the box.
+
+Now, I can change the size of the SVG using `width` and `height`.
+Since, I always want the viewBox to start where my SVG starts, then
+I never have to touch `viewBox` again.
+
+Set it and forget it!
 
 
 
@@ -146,7 +211,7 @@ The `fill` attribute sets the color of the SVG.
 
 > #### Keeping `viewBox`, `width` and `height` together
 >
-> Here's the thing: 
+> Here's the thing:
 >
 > for really predictable results, I always make sure to include `viewBox`, `width` and `height` on the `<svg>` element.
 For my own humble requirements at work, keeping these three attributes together helps a lot. Now here's how we can think about them together.
@@ -161,12 +226,12 @@ Let's start with the `<svg>` wrapping element.
 </svg>
 ```
 
-Get ready for some air quotes. 
+Get ready for some air quotes.
 
-We can control "sizing" with `width` and `height`. 
+We can control "sizing" with `width` and `height`.
 
 - You can override these attribtue values with CSS
-- The SVG will keep its aspect ratio intact, so you won't see any weird stretching or shrinking when you do weird size changes. 
+- The SVG will keep its aspect ratio intact, so you won't see any weird stretching or shrinking when you do weird size changes.
 
 We can control the "parts of the SVG you actually see" with `viewBox`.
 
@@ -185,14 +250,3 @@ Width and height control the **viewport** of the SVG. You can see what I mean wh
 <!--
 <p data-height="500" data-theme-id="0" data-slug-hash="zoxLNj" data-default-tab="result" data-user="brianhan" data-embed-version="2" data-pen-title="Inline SVG width and height" class="codepen">See the Pen <a href="http://codepen.io/brianhan/pen/zoxLNj/">Inline SVG width and height</a> by Brian Han (<a href="http://codepen.io/brianhan">@brianhan</a>) on <a href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>-->
-
-
-
- 
-
-
-
-
-
-
-
